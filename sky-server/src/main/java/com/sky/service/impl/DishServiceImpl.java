@@ -15,6 +15,7 @@ import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Slf4j
 public class DishServiceImpl implements DishService {
 
     @Autowired
@@ -92,10 +94,52 @@ public class DishServiceImpl implements DishService {
         }
 
         //删除菜品表中的数据
-        ids.forEach(id -> dishMapper.deleteById(id));
+        dishMapper.deleteByIds(ids);
 
         //删除菜品关联的口味数据
-        ids.forEach(id -> dishFlavorMapper.deleteByDishId(id));
+        dishFlavorMapper.deleteByDishIds(ids);
+    }
+
+    /**
+     * 根据id查询菜品和对应的口味数据
+     * @param id
+     * @return
+     */
+    @Override
+    public DishVO getByIdWithFlavor(Long id) {
+        //查询菜品数据
+        Dish dish = dishMapper.getById(id);
+        //查询口味数据
+        List<DishFlavor> dishFlavor = dishFlavorMapper.getByDishId(id);
+        //封装数据并返回
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish,dishVO);
+        dishVO.setFlavors(dishFlavor);
+        return dishVO;
+    }
+
+    @Override
+    public void updateWithFlavor(DishDTO dishDTO) {
+        log.info("开始更新菜品，菜品ID: {}, 菜品名称: {}", dishDTO.getId(), dishDTO.getName());
+
+        //修改菜品表数据
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO,dish);
+        dishMapper.update(dish);
+        log.info("菜品基本信息更新完成，开始更新口味信息");
+        //修改口味表数据
+        //删除原有的口味数据
+        dishFlavorMapper.deleteByDishId(dish.getId());
+        //再插入新的口味数据
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if(flavors != null && flavors.size() > 0){
+            flavors.forEach(dishFlavor -> {
+                dishFlavor.setDishId(dish.getId());
+            });
+            dishFlavorMapper.insertBatch(flavors);
+        }
+        log.info("菜品更新完成，菜品ID: {}", dishDTO.getId());
+
     }
 
 
