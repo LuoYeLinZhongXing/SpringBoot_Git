@@ -60,4 +60,12 @@ public interface DishMapper {
      */
     @AutoFill(OperationType.UPDATE)
     void update(Dish dish);
+
+    /**
+     * 修改菜品状态
+     * @param status
+     * @param id
+     */
+    @Insert("update dish set status = #{status} where id = #{id}")
+    void setStatus(Integer status, Long id);
 }
