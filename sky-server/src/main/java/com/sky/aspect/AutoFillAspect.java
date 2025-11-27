@@ -81,6 +81,7 @@ public class AutoFillAspect {
                 setUpdateTime.invoke(arg,now);
                 setUpdateUser.invoke(arg,currentId);
             } catch (Exception e) {
+                log.error("自动填充失败");
                 throw new RuntimeException(e);
             }
         }
