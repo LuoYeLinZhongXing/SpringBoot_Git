@@ -68,4 +68,19 @@ public interface DishMapper {
      */
     @Insert("update dish set status = #{status} where id = #{id}")
     void setStatus(Integer status, Long id);
+
+    /**
+     * 根据分类id查询菜品
+     * @param dish
+     * @return
+     */
+    @Select("select * from dish where status = 1 and category_id = #{categoryId}")
+    List<Dish> getListByCategoryId(Dish dish);
+
+    /**
+     * 动态查询
+     * @param dish
+     * @return
+     */
+    List<Dish> list(Dish dish);
 }
