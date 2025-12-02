@@ -1,6 +1,9 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
+import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -19,11 +22,18 @@ public interface SetmealMapper {
      * 条件查询
      * @param setmeal
      */
-    void list(Setmeal setmeal);
+    //void list(Setmeal setmeal);
 
     /**
      * 新增套餐
      * @param setmeal
      */
     void insert(Setmeal setmeal);
+
+    /**
+     * 分页查询
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    Page<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
 }

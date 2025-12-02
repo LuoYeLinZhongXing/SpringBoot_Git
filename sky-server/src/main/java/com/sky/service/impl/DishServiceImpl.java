@@ -119,6 +119,10 @@ public class DishServiceImpl implements DishService {
         return dishVO;
     }
 
+    /**
+     * 修改菜品
+     * @param dishDTO
+     */
     @Override
     public void updateWithFlavor(DishDTO dishDTO) {
         log.info("开始更新菜品，菜品ID: {}, 菜品名称: {}", dishDTO.getId(), dishDTO.getName());
@@ -170,6 +174,11 @@ public class DishServiceImpl implements DishService {
         return dishVOList;
     }
 
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
     @Override
     public List<Dish> getListByCategoryId(Long categoryId) {
         Dish dish = Dish.builder().categoryId(categoryId).status(StatusConstant.ENABLE).build();
