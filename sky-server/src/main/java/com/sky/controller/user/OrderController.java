@@ -92,6 +92,14 @@ public class OrderController {
     }
 
 
+    @GetMapping("/reminder/{id}")
+    @ApiOperation("订单催单")
+    public Result reminder(@PathVariable("id") Long id){
+        log.info("订单催单，订单id为{}", id);
+        orderService.reminder(id);
+        return Result.success();
+    }
+
     /**
      * 再来一单
      * @param id

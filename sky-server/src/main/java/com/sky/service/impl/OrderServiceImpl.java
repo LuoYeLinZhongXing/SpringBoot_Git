@@ -461,6 +461,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
+     * 催单
+     * @param id
+     */
+    @Override
+    public void reminder(Long id) {
+        Orders byId = orderMapper.getById(id);
+        if(byId == null|| !byId.getStatus().equals(Orders.PENDING_PAYMENT)){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        HashMap HashMap = new HashMap();
+        HashMap.put("type","orderReminder");
+        HashMap.put("orderId",id);
+        HashMap.put("content","订单号:"+ byId.getNumber());
+        String json = JSON.toJSONString(HashMap);
+        webSocketServer.sendToAllClient(json);
+    }
+
+    /**
      * 获取订单菜品信息
      * @param page
      * @return
