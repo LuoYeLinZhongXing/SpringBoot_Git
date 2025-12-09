@@ -71,4 +71,11 @@ public interface OrderMapper {
      * @return
      */
     Double sumByMap(HashMap hashMap);
+
+    /**
+     * 根据动态条件统计数量
+     * @param map
+     * @return
+     */
+    Integer countByMap(HashMap map);
 }
