@@ -71,14 +71,14 @@ public interface OrderMapper {
      * @param hashMap
      * @return
      */
-    Double sumByMap(HashMap hashMap);
+    Double sumByMap(Map hashMap);
 
     /**
      * 根据动态条件统计数量
      * @param map
      * @return
      */
-    Integer countByMap(HashMap map);
+    Integer countByMap(Map map);
 
     /**
      * 查询销量排名top10
